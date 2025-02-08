@@ -1,20 +1,37 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { StyleSheet } from "react-native";
-import { Image } from "expo-image";
 import ImageViewer from "@/component/ImageViewer";
 import Button from "@/component/Button";
+import * as ImagePicker from "expo-image-picker";
+import { useState } from "react";
 
 const placeHolder = require("../../assets/images/greeting-cat.jpeg");
 
 export default function Index() {
+  const [image, setImage] = useState<string | undefined>(undefined);
+
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      quality: 1,
+    });
+    if (!result.canceled) setImage(result.assets[0].uri);
+    else alert("pick a photo.");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         {/* <Image source={placeHolder} style={styles.image} /> */}
-        <ImageViewer imageSrc={placeHolder} />
+        <ImageViewer imageSrc={image || placeHolder} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button label="Choose a photo" theme="primary"></Button>
+        <Button
+          label="Choose a photo"
+          theme="primary"
+          onPress={pickImageAsync}
+        ></Button>
         <Button label="Use this picture"></Button>
       </View>
     </View>

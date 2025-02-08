@@ -9,6 +9,7 @@ const placeHolder = require("../../assets/images/greeting-cat.jpeg");
 
 export default function Index() {
   const [image, setImage] = useState<string | undefined>(undefined);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -16,8 +17,10 @@ export default function Index() {
       allowsEditing: true,
       quality: 1,
     });
-    if (!result.canceled) setImage(result.assets[0].uri);
-    else alert("pick a photo.");
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      setShowOptions(true);
+    } else alert("pick a photo.");
   };
 
   return (
@@ -26,14 +29,18 @@ export default function Index() {
         {/* <Image source={placeHolder} style={styles.image} /> */}
         <ImageViewer imageSrc={image || placeHolder} />
       </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          label="Choose a photo"
-          theme="primary"
-          onPress={pickImageAsync}
-        ></Button>
-        <Button label="Use this picture"></Button>
-      </View>
+      {showOptions ? (
+        <View style={styles.buttonContainer}>
+          <Button
+            label="Choose a photo"
+            theme="primary"
+            onPress={pickImageAsync}
+          ></Button>
+          <Button label="Use this picture"></Button>
+        </View>
+      ) : (
+        <View />
+      )}
     </View>
   );
 }

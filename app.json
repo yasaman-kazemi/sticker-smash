@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "daily-tracker",
-    "slug": "daily-tracker",
+    "name": "sticker-smash",
+    "slug": "sticker-smash",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

@@ -6,12 +6,19 @@ import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
 import IconButton from "@/component/IconButton";
 import AddButton from "@/component/AddButton";
+import EditOptionModal from "@/component/EditOptionModal";
+import StickerList from "@/component/StickerList";
+import { ImageSource } from "expo-image";
+import EmojiSticker from "@/component/EmojiSticker";
 
 const placeHolder = require("../../assets/images/greeting-cat.jpeg");
 
 export default function Index() {
   const [image, setImage] = useState<string | undefined>(undefined);
   const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [pickedEmoji, setPickedEmoji] = useState<string | undefined>(undefined);
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -28,21 +35,28 @@ export default function Index() {
   const onReset = () => {
     setShowOptions(false);
     setImage(placeHolder);
+    setPickedEmoji(undefined);
   };
 
   const onAddSticker = () => {
-    // we will implement this later
+    setIsModalOpen(true);
   };
 
   const onSave = async () => {
     // we will implement this later
   };
 
+  const modalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        {/* <Image source={placeHolder} style={styles.image} /> */}
         <ImageViewer imageSrc={image || placeHolder} />
+        {pickedEmoji && (
+          <EmojiSticker stickerSource={pickedEmoji} imageSize={40} />
+        )}
       </View>
       {!showOptions ? (
         <View style={styles.buttonContainer}>
@@ -62,6 +76,9 @@ export default function Index() {
           </View>
         </View>
       )}
+      <EditOptionModal visible={isModalOpen} onClose={modalClose}>
+        <StickerList onSelect={setPickedEmoji} onCloseModal={modalClose} />
+      </EditOptionModal>
     </View>
   );
 }

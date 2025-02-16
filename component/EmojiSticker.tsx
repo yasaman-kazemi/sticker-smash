@@ -16,6 +16,7 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
   //this is like useState but don't rerender every time you change the size of the image
   const scaleImage = useSharedValue(imageSize);
 
+  //keeping the track of the position of the sticker
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
 
@@ -53,7 +54,7 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
 
   return (
     <GestureDetector gesture={drag}>
-      <Animated.View style={[containerStyle, { top: -350 }]}>
+      <Animated.View style={[containerStyle, { top: -260, right: -120 }]}>
         <GestureDetector gesture={doubleTap}>
           <Animated.Image
             source={stickerSource as ImageSourcePropType}
